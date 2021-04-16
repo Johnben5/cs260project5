@@ -25,6 +25,7 @@
         </div>
         <div class="footer">
             <a href="https://github.com/Johnben5/cs260project5">Link to Github</a>
+            <p>7 hours</p>
         </div>
     </div>
 </template>

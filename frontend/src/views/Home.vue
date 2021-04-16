@@ -18,7 +18,7 @@
                     <div class="Spacer"></div>
 
                     <div v-for="profile in profiles" :key="profile.id">
-                        <div v-if="item.profile == profile._id">
+                        <div v-if="item.user == profile._id">
                             <p><strong>Seller: </strong>{{profile.name}}</p>
                             <p><strong>Phone: </strong>{{profile.phone}}</p>
                             <p><strong>Email: </strong>{{profile.email}}</p>
@@ -35,15 +35,15 @@
 <script>
     import axios from 'axios';
     export default {
-        name: 'SellItems',
+        name: 'Home',
         data() {
             return {
                 profiles: [],
-                itemsByState: [],
                 items: [],
+                currentState: "",
+                itemsByState: [],
                 totalItems: [],
                 selectedProfile: null,
-                currentState: "",
             }
         },
         created() {
@@ -52,7 +52,7 @@
         methods: {
             async getProfiles() {
                 try {
-                    const response = await axios.get("/api/profiles");
+                    const response = await axios.get("/api/users/list");
                     this.profiles = response.data;
                     this.findStates();
                 } catch (error) {
@@ -69,7 +69,6 @@
                     }
                     if (stateFound == false) {
                         this.itemsByState.push(profile.state);
-
                     }
                     stateFound = false;
                 }
@@ -81,7 +80,7 @@
                     if (profile.state == state) {
                         this.selectedProfile = profile;
                         try {
-                            const response = await axios.get(`/api/profiles/${this.selectedProfile._id}/items`);
+                            const response = await axios.get(`/api/items/${this.selectedProfile._id}`);
                             this.items = response.data;
                             this.totalItems = this.totalItems.concat(this.items);
                         } catch (error) {
@@ -89,10 +88,11 @@
                         }
                     }
                 }
-            }
+            },
         },
-            
-    }</script>
+
+    }
+</script>
 
 <style>
 .userItems p {
